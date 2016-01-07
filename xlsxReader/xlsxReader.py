@@ -9,11 +9,11 @@ rows = ws.rows
 
 def getPatientInfo():
 
-    patientDict = {}
+    patients = []
 
-    for x in range(1, 6):#ws.max_row):
+    for x in range(1,ws.max_row):
         if(rows[x][1].value is not None):
-            patientDict[x] = {}
+            patient = {"id":x}
             for y in range(0, ws.max_column):
                 value = rows[x][y].value
                 if(value == '-'):
@@ -21,8 +21,9 @@ def getPatientInfo():
                 if(isinstance(value,datetime)):
                     format = '%m-%d-%Y'
                     value = str(value.date().strftime(format))
-                patientDict[x][rows[0][y].value] = value
-    return patientDict
+                patient[rows[0][y].value] = value
+            patients.append(patient)
+    return patients
 
 def getJsonOfPatientInfo():
     return json.dumps(getPatientInfo(), indent=4, separators=(',', ': '))

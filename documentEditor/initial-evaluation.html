@@ -3,17 +3,19 @@
 
 <head>
     <title>Initial Evaluation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    <script src="app.js"></script>
     <!--    <link rel="stylesheet" href="boxify.css">-->
     <link rel="stylesheet" href="main.css">
 </head>
 
-<body>
+<body ng-app="app" ng-controller="PatientsCtrl">
     <img src="header.png">
     <div class="row">
         <div class="physicianInfo col-6">
             <h4>Physician:</h4>
             <br>
-            <div>Aima Doctorius, M.D.</div>
+            <div>{{selectedPatient.PHYSICIAN}}</div>
             <div>123 Healthy St.</div>
             <div>Suite 123</div>
             <div>Honolulu, HI 12345</div>
@@ -22,27 +24,28 @@
             <table>
                 <tr>
                     <th>Patient:</th>
-                    <td>LastName, FirstName</td>
+                    <td><select ng-options="patient.LASTNAME+', '+patient.FIRSTNAME for patient in patientData track by patient.id"
+            ng-model="selectedPatient"></select></td>
                 </tr>
                 <tr>
                     <th>Insurer:</th>
-                    <td>Rest Insured</td>
+                    <td>{{selectedPatient.INSURANCE}}</td>
                 </tr>
                 <tr>
                     <th>Adjustor:</th>
-                    <td>Mister Justor</td>
+                    <td>{{selectedPatient.ADJUSTOR}}</td>
                 </tr>
                 <tr>
                     <th>Employer:</th>
-                    <td>Money Tree</td>
+                    <td>{{selectedPatient.EMPLOYER}}</td>
                 </tr>
                 <tr>
                     <th>Date of Injury:</th>
-                    <td>10-11-2015</td>
+                    <td>{{selectedPatient.DOI}}</td>
                 </tr>
                 <tr>
                     <th>Date of Exam:</th>
-                    <td>10-23-2015</td>
+                    <td>{{selectedPatient.START}}</td>
                 </tr>
             </table>
         </div>
@@ -52,13 +55,14 @@
     <div class="doubleHorizontalRule row"></div>
     <div class="report">
         <h2 class="reportHeader col-12 center">Physical Therapy Initial Evaluation</h2>
-        <p class="diagnosis col-12"><strong>Dx: S/P</strong> (L) knee arthroscopy PLM, 10/21/15</p>
+        <p class="diagnosis col-12"><strong>DX: </strong>{{selectedPatient.DIAGNOSIS}}, 10/21/15</p>
         <div class="problemList">
             <h4 class="sectionHeader">Problem List:</h4>
             <ul class="listOfProblems">
-                <li>stuff 1</li>
-                <li>stuff 2</li>
-                <li>stuff 3</li>
+                <li>Pain: {{selectedPatient.PAIN}}/10</li>
+                <li>Decreased mobility of {{selectedPatient["R/L"]}} knee</li>
+                <li>Decreased strength of {{selectedPatient["R/L"]}} knee</li>
+                <li>Decreased stability of {{selectedPatient["R/L"]}} knee</li>
             </ul>
         </div>
         <div class="assessment">
@@ -74,22 +78,22 @@
             <tr>
                 <td class="col-3">1. decrease knee pain</td>
                 <td class="col-6">1. mobilization, stretching, e-stim PRN, ultrasound PRN</td>
-                <td class="col-3">1. 12/31/15</td>
+                <td class="col-3">1. {{selectedPatient["COM DATE"]}}</td>
             </tr>
             <tr>
                 <td class="col-3">2. improve on knee mobility</td>
                 <td class="col-6">2. therapeutic exercises</td>
-                <td class="col-3">2. 12/31/15</td>
+                <td class="col-3">2. {{selectedPatient["COM DATE"]}}</td>
             </tr>
             <tr>
                 <td class="col-3">3. improve knee strength</td>
                 <td class="col-6">3. therapeutic exercises</td>
-                <td class="col-3">3. 12/31/15</td>
+                <td class="col-3">3. {{selectedPatient["COM DATE"]}}</td>
             </tr>
             <tr>
                 <td class="col-3">4. maximize function</td>
                 <td class="col-6">4. active exercises</td>
-                <td class="col-3">4. 12/31/15</td>
+                <td class="col-3">4. {{selectedPatient["COM DATE"]}}</td>
             </tr>
         </table>
         <br>
@@ -159,38 +163,38 @@
                     <tr>
                         <th>Flexion</th>
                         <td></td>
-                        <td class="center">150&deg;</td>
-                        <td class="center">107&deg;</td>
-                        <td class="center">4+/5</td>
-                        <td class="center">4-/5</td>
+                        <td class="center">{{selectedPatient.RFR}}&deg;</td>
+                        <td class="center">{{selectedPatient.LFR}}&deg;</td>
+                        <td class="center">{{selectedPatient.RSF}}/5</td>
+                        <td class="center">{{selectedPatient.LSF}}/5</td>
                     </tr>
                     <tr>
                         <th>Extension</th>
                         <td></td>
-                        <td class="center">0&deg;</td>
-                        <td class="center">0&deg;</td>
-                        <td class="center">4+/5</td>
-                        <td class="center">4-/5</td>
+                        <td class="center">{{selectedPatient.RER}}&deg;</td>
+                        <td class="center">{{selectedPatient.LER}}&deg;</td>
+                        <td class="center">{{selectedPatient.RSE}}/5</td>
+                        <td class="center">{{selectedPatient.LSE}}/5</td>
                     </tr>
                     <tr>
                         <th>Girth:</th>
                         <td>15 cm above</td>
-                        <td class="center">37.5 cm</td>
-                        <td class="center">37.0 cm</td>
+                        <td class="center">{{selectedPatient.RAJL}} cm</td>
+                        <td class="center">{{selectedPatient.LAJL}} cm</td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Joint line</td>
-                        <td class="center">28.5 cm</td>
-                        <td class="center">30.0 cm</td>
+                        <td class="center">{{selectedPatient.RJL}} cm</td>
+                        <td class="center">{{selectedPatient.LJL}} cm</td>
                         <td colspan="2"></td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>11 cm below</td>
-                        <td class="center">30.5 cm</td>
-                        <td class="center">29.5 cm</td>
+                        <td class="center">{{selectedPatient.RBJL}} cm</td>
+                        <td class="center">{{selectedPatient.LBJL}} cm</td>
                         <td colspan="2"></td>
                     </tr>
                 </table>
